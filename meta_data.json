@@ -1,0 +1,17 @@
+{
+    "categories": {
+        "0": "calendar",
+        "1": "mobile",
+        "2": "data (things)"
+    },
+    "data_tracked": false,
+    "demo_page": "https://date--time-picker.bubbleapps.io/version-test",
+    "description": "EN \nA modern, fully customizable Date & Time Picker for Bubble!\nWith a beautiful popup calendar and time selector, this plugin lets you easily manage date, time, and month inputs — with full control over colors, borders, padding, and themes (light, dark, normal, or custom).\n\n🔹 Works natively with Bubble inputs\n🔹 Popup opens up or down (your choice!)\n🔹 Supports custom icons, padding, and flexible layouts\n🔹 Built for clarity — ideal for dashboards, HR tools, and booking apps\n🔹 No external libraries — pure JavaScript, fast, and responsive\n\nBring a professional and elegant experience to your Bubble app with Smart Date & Time Picker.\n\nBR\n\nUm seletor moderno e totalmente personalizável de data e hora para Bubble!\nCom um popup elegante de calendário e seleção de tempo, esse plugin permite escolher datas, horas e meses com total controle sobre cores, bordas, arredondamento e temas (claro, escuro, normal ou personalizado).\n\n🔹 Compatível com os inputs nativos do Bubble\n🔹 Escolha se o popup abre para cima ou para baixo\n🔹 Ícone personalizável, padding ajustável e layout flexível\n🔹 Ideal para sistemas administrativos, RH e agendamentos\n🔹 Desenvolvido em JavaScript puro — leve, rápido e sem dependências externas\n\nLeve uma experiência profissional e elegante ao seu aplicativo com o Smart Date & Time Picker.\n\nDEMO:\nhttps://bubble.io/page?id=date--time-picker&test_plugin=1762825688632x268099702224584700_current&tab=Design&name=index&elements=bTHDl\n\n\nPREVIEW:\nhttps://date--time-picker.bubbleapps.io/version-test",
+    "designed_for": "web",
+    "image": "//meta-q.cdn.bubble.io/f1762902049204x937132125590290000/Captura%20de%20tela%202025-11-11%20200025.png",
+    "license": "open_source",
+    "link": "https://date--time-picker.bubbleapps.io/version-test",
+    "name": "Smart Date & Time Picker",
+    "platforms_new": "web",
+    "plugin_instructions": "EN\n\nDrag the Smart Date & Time Picker element onto your Bubble page.\n\nChoose the picker format: Date, Time or DateTime.\n\nSet your theme (light, dark, normal, or customized).\n\nOptionally define custom colors, icon, popup direction, and padding.\n\nUse the states date and date_string or trigger the dateready event in your workflows.\n\n💡 Tip:\nFor full customization, set Color Scheme to Customized and define your own colors and borders.\n\nBR\n\nArraste o elemento Smart Date & Time Picker para a sua página no Bubble.\n\nEscolha o formato do seletor: Data, Hora ou Data/Hora.\n\nSelecione o tema (claro, escuro, normal ou personalizado).\n\nCaso queira, defina suas próprias cores, ícone, direção do popup e espaçamento interno.\n\nUse os estados date e date_string ou o evento dateready nos seus workflows.\n\n💡 Dica:\nPara personalização total, defina o esquema de cores como Customized e escolha suas próprias cores e bordas."
+}

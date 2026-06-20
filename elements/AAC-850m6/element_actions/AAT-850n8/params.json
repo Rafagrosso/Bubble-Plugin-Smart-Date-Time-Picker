@@ -1,0 +1,21 @@
+{
+    "caption": "setdate",
+    "fields": {
+        "AAX": {
+            "caption": "date",
+            "editor": "DynamicValue",
+            "name": "date",
+            "rank": 0,
+            "value": "date"
+        },
+        "AAY": {
+            "caption": "trigger event after set",
+            "default_val": false,
+            "editor": "DynamicValue",
+            "name": "triggerevent",
+            "optional": true,
+            "rank": 1,
+            "value": "boolean"
+        }
+    }
+}

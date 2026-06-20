@@ -1,0 +1,304 @@
+{
+    "add_hover_pressed": true,
+    "add_is_visible": true,
+    "can_fit_height": true,
+    "can_fit_width": true,
+    "category": "input forms",
+    "default_dim": {
+        "height": 44,
+        "width": 132
+    },
+    "display": "Date/Time Picker",
+    "events": {
+        "AAR": {
+            "caption": "date/time is selected",
+            "doc": "Triggered whenever a date or time is selected.",
+            "name": "dateready"
+        },
+        "AAS": {
+            "caption": "was reseted",
+            "name": "reset"
+        }
+    },
+    "fields": {
+        "AAD": {
+            "caption": "Picker type",
+            "default_val": "date and time",
+            "doc": "Defines which kind of picker is displayed: \"date\", \"time\" or \"datetime-local\".",
+            "editor": "Dropdown",
+            "name": "format",
+            "options": "date and time,date,time",
+            "rank": 21
+        },
+        "AAG": {
+            "caption": "Minute step interval",
+            "doc": "Sets the minute interval used for time selection (e.g., 5 = 00, 05, 10...).",
+            "editor": "DynamicValue",
+            "name": "step",
+            "optional": true,
+            "rank": 23,
+            "value": "number"
+        },
+        "AAH": {
+            "caption": "Minimum date/time",
+            "doc": "Sets the minimum selectable date/time. (Reserved for future logic implementation.)",
+            "editor": "DynamicValue",
+            "name": "min",
+            "optional": true,
+            "rank": 24,
+            "value": "text"
+        },
+        "AAI": {
+            "caption": "Maximum date/time",
+            "doc": "Sets the maximum selectable date/time. (Reserved for future logic implementation.)",
+            "editor": "DynamicValue",
+            "name": "max",
+            "optional": true,
+            "rank": 25,
+            "value": "text"
+        },
+        "AAJ": {
+            "caption": "Initial date/time",
+            "doc": "Sets an initial date/time value displayed when the element loads.",
+            "editor": "DynamicValue",
+            "name": "initial",
+            "optional": true,
+            "rank": 22,
+            "value": "date"
+        },
+        "AAK": {
+            "caption": "Color scheme",
+            "default_val": "normal",
+            "doc": "Defines the color style of the picker. Options: \"light\", \"dark\", \"normal\", or \"customized\".",
+            "editor": "Dropdown",
+            "name": "colorscheme",
+            "options": "normal,dark,light,revert,customized",
+            "rank": 9
+        },
+        "AAL": {
+            "caption": "Center content vertically",
+            "default_val": false,
+            "doc": "Centers the input horizontally and vertically inside the element using flexbox.",
+            "editor": "Checkbox",
+            "name": "vcenter",
+            "rank": 3
+        },
+        "AAN": {
+            "caption": "Fit width to content",
+            "default_val": true,
+            "doc": "If true, the element width automatically adapts to the content. Otherwise, it fills 100% of the container width.",
+            "editor": "Checkbox",
+            "name": "fitwidth",
+            "rank": 1
+        },
+        "AAO": {
+            "caption": "Fit height to content",
+            "default_val": true,
+            "doc": "If true, the element height adjusts automatically to its content.",
+            "editor": "Checkbox",
+            "name": "fitheight",
+            "rank": 2
+        },
+        "AAZ": {
+            "caption": "Border color",
+            "default_val": "rgba(231,231,231,1)",
+            "doc": "Defines the border color for the popup (used only when colorscheme = \"customized\")",
+            "editor": "Color",
+            "name": "bordercolor",
+            "optional": true,
+            "rank": 10
+        },
+        "AAa": {
+            "caption": "Border radius (px)",
+            "default_val": 3,
+            "doc": "Rounds the corners of the popup and selectable elements. (only used in \"customized\" mode)",
+            "editor": "StaticNumber",
+            "name": "borderradius",
+            "optional": true,
+            "rank": 14
+        },
+        "AAb": {
+            "caption": "Border width (px)",
+            "default_val": 1,
+            "doc": "Sets the thickness of the popup border.(only used in \"customized\" mode)",
+            "editor": "StaticNumber",
+            "name": "borderwidth",
+            "optional": true,
+            "rank": 15
+        },
+        "AAc": {
+            "caption": "Background color",
+            "default_val": "rgba(243,251,254,1)",
+            "doc": "Defines the background color of the popup (only used in \"customized\" mode)",
+            "editor": "Color",
+            "name": "backgroundcolor",
+            "optional": true,
+            "rank": 11
+        },
+        "AAd": {
+            "caption": "Font color",
+            "default_val": "rgba(0,32,81,1)",
+            "doc": "Sets the text color used inside the popup. (only used in \"customized\" mode)",
+            "editor": "Color",
+            "in_style": false,
+            "name": "fontcolor",
+            "optional": true,
+            "rank": 16
+        },
+        "AAe": {
+            "caption": "Font size (px)",
+            "default_val": "12",
+            "doc": "Sets the font size for the popup content. (only used in \"customized\" mode)",
+            "editor": "StaticText",
+            "name": "fontsize",
+            "optional": true,
+            "rank": 17
+        },
+        "AAf": {
+            "caption": "Selected item color",
+            "default_val": "rgba(69,140,247,1)",
+            "doc": "Sets the highlight color for the selected item in the calendar or time selector. (only used in \"customized\" mode)",
+            "editor": "Color",
+            "name": "selectedcolor",
+            "optional": true,
+            "rank": 12
+        },
+        "AAg": {
+            "caption": "Hover color",
+            "default_val": "rgba(183,205,244,1)",
+            "doc": "Sets the hover color when the user moves the mouse over a selectable item. (only used in \"customized\" mode)",
+            "editor": "Color",
+            "name": "hovercolor",
+            "optional": true,
+            "rank": 13
+        },
+        "AAh": {
+            "caption": "Selection padding (px)",
+            "default_val": 5,
+            "doc": "Internal padding for each selectable item (day, month, hour, minute). (only used in \"customized\" mode)",
+            "editor": "StaticNumber",
+            "name": "selectionpadding",
+            "optional": true,
+            "rank": 18
+        },
+        "AAi": {
+            "caption": "Custom icon URL",
+            "default_val": "https://1c23b6bf596d117291112a925b444add.cdn.bubble.io/f1762892654294x103612540200068500/timer_53dp_000000_FILL0_wght400_GRAD0_opsz48.svg?_gl=1*1ws3v6r*_gcl_au*NTI0MzkxMTEyLjE3NTk5NDA3MDE.*_ga*MTQwMzU2MDcxNy4xNzU3MDI1MjMw*_ga_BFPVR2DEE2*czE3NjI3OTQyNjkkbzE1JGcxJHQxNzYyODkyNjQ0JGoxMSRsMCRoMA..",
+            "doc": "Optional. Defines the image URL to use as a custom icon. If empty, the default calendar emoji (📅) will be shown.",
+            "editor": "StaticText",
+            "name": "iconurl",
+            "optional": true,
+            "rank": 27
+        },
+        "AAj": {
+            "caption": "Icon size (px)",
+            "default_val": 15,
+            "doc": "Defines the size (width and height) of the icon on the right side of the input.",
+            "editor": "StaticNumber",
+            "name": "iconsize",
+            "optional": true,
+            "rank": 28
+        },
+        "AAk": {
+            "caption": "Popup direction (up/down)",
+            "default_val": "up",
+            "doc": "Defines whether the popup opens upward or downward relative to the input element.",
+            "editor": "Dropdown",
+            "name": "popup_direction",
+            "optional": true,
+            "options": "up,down",
+            "rank": 7
+        },
+        "AAl": {
+            "caption": "Input width (px)",
+            "default_val": 132,
+            "doc": "Defines a fixed input width in pixels. If empty, it defaults to 100%.",
+            "editor": "StaticNumber",
+            "name": "input_width",
+            "optional": true,
+            "rank": 4
+        },
+        "AAm": {
+            "caption": "Input height (px)",
+            "default_val": 44,
+            "doc": "Defines a fixed input height in pixels. If empty, it defaults to 100%.",
+            "editor": "StaticNumber",
+            "name": "input_height",
+            "optional": true,
+            "rank": 5
+        },
+        "AAn": {
+            "caption": "Input padding (px)",
+            "default_val": 10,
+            "doc": "Controls the inner spacing of the input. Helps visually center the text.",
+            "editor": "StaticNumber",
+            "name": "input_padding",
+            "optional": true,
+            "rank": 6
+        },
+        "AAo": {
+            "caption": "Layout and Alignment",
+            "editor": "Label",
+            "name": "Layout and Alignment",
+            "rank": 0
+        },
+        "AAp": {
+            "caption": "Aparência e Tema",
+            "editor": "Label",
+            "name": "Aparência e Tema",
+            "rank": 8
+        },
+        "AAq": {
+            "caption": "Popup padding (px)",
+            "default_val": 5,
+            "doc": "Defines the global inner spacing of the popup (fallback for selectionpadding). (used only when colorscheme = \"customized\")",
+            "editor": "StaticNumber",
+            "name": "popuppadding",
+            "rank": 19
+        },
+        "AAr": {
+            "caption": "Functionality",
+            "editor": "Label",
+            "name": "Functionality",
+            "rank": 20
+        },
+        "AAs": {
+            "caption": "Icon Settings",
+            "editor": "Label",
+            "name": "Icon Settings",
+            "rank": 26
+        }
+    },
+    "has_reset_fn": true,
+    "icon": "ion-android-calendar",
+    "platform_type": "web",
+    "property_applications": {
+        "Background": true,
+        "Border": true,
+        "BoxShadow": true,
+        "Font": true,
+        "MinWidth": true,
+        "Padding": true,
+        "resizable": true
+    },
+    "states": {
+        "AAE": {
+            "caption": "date",
+            "doc": "Returns the selected date/time as a date object.",
+            "initialization_code": {
+                "fn": "function(properties, context) {\n\n\n\n}"
+            },
+            "name": "date",
+            "value": "date"
+        },
+        "AAF": {
+            "caption": "date_string",
+            "doc": "Returns the selected date/time as a formatted text string.",
+            "initialization_code": {
+                "fn": "function(properties, context) {\n\n\n\n}"
+            },
+            "name": "date_string",
+            "value": "text"
+        }
+    }
+}
