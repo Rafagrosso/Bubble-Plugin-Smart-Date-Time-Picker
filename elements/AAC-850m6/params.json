@@ -41,7 +41,7 @@
         },
         "AAH": {
             "caption": "Minimum date/time",
-            "doc": "Sets the minimum selectable date/time. (Reserved for future logic implementation.)",
+            "doc": "Sets the minimum selectable date/time. Accepts a date (earlier days become disabled in the calendar) or, for the time picker, a time string like \"08:00\".",
             "editor": "DynamicValue",
             "name": "min",
             "optional": true,
@@ -50,7 +50,7 @@
         },
         "AAI": {
             "caption": "Maximum date/time",
-            "doc": "Sets the maximum selectable date/time. (Reserved for future logic implementation.)",
+            "doc": "Sets the maximum selectable date/time. Accepts a date (later days become disabled in the calendar) or, for the time picker, a time string like \"18:00\".",
             "editor": "DynamicValue",
             "name": "max",
             "optional": true,
@@ -202,7 +202,7 @@
         "AAk": {
             "caption": "Popup direction (up/down)",
             "default_val": "up",
-            "doc": "Defines whether the popup opens upward or downward relative to the input element.",
+            "doc": "Preferred opening direction of the popup. It automatically flips when there is not enough space in the chosen direction.",
             "editor": "Dropdown",
             "name": "popup_direction",
             "optional": true,

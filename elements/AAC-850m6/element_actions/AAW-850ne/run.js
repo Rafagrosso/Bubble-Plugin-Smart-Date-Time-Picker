@@ -1,16 +1,12 @@
 function(instance, properties, context) {
 
-
-  //Load any data 
-
     var input = document.getElementById(instance.data.inputid);
+    if (!input) return;
 
     input.value = "";
-    instance.publishState("date");
+    instance.publishState("date", null);
     instance.publishState("date_string", "");
 
-  //Do the operation
-
-
+    instance.triggerEvent('reset');
 
 }

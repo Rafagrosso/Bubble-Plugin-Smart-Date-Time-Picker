@@ -1,80 +1,45 @@
 function(instance, properties, context) {
 
-    
-        var input = document.getElementById(instance.data.inputid);
-    
-    
-    			function padTo2Digits(num) {
-                  return num.toString().padStart(2, '0');
-                }
+    var input = document.getElementById(instance.data.inputid);
+    if (!input || !properties.date) return;
 
-                function formatDate(date) {
-                  return (
-                    [
-                      date.getFullYear(),
-                      padTo2Digits(date.getMonth() + 1),
-                      padTo2Digits(date.getDate()),
-                    ].join('-') +
-                    ' ' +
-                    [
-                      padTo2Digits(date.getHours()),
-                      padTo2Digits(date.getMinutes()),
-//                      padTo2Digits(date.getSeconds()),
-                    ].join(':')
-                  );
-                }
+    var d = new Date(properties.date);
+    if (isNaN(d.getTime())) return;
 
-           if (instance.data.format == "date") {
-                
-                input.value = new Date(properties.date).toISOString().split('T')[0];
-           		instance.publishState("date", input.value);
-        		instance.publishState("date_string", input.value.toString());
+    function pad(n){ return (n < 10 ? '0' + n : '' + n); }
 
-            }
-            
-            
-            else if (instance.data.format == "month") {
-                
-                var month = new Date(properties.date).toISOString().split('T')[0];
-                input.value = month.slice(0, -3);
-                instance.publishState("date", input.value);
-        		instance.publishState("date_string", input.value.toString());
+    // formatação local — sem deslocamento de fuso horário (toISOString causava off-by-one)
+    var ds = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+    var ts = pad(d.getHours()) + ':' + pad(d.getMinutes());
 
-            }
-            
-            else if (instance.data.format == "datetime-local") {
+    if (instance.data.format == "date") {
 
-                const [date, time] = formatDate(new Date(properties.date)).split(' ');
-                input.value = date + 'T' + time;
-                instance.publishState("date", input.value);
-        		instance.publishState("date_string", input.value.toString());
+        input.value = ds;
+        instance.publishState("date", new Date(d.getFullYear(), d.getMonth(), d.getDate()));
 
-            }
-            
-            else if (instance.data.format == "time") {
+    } else if (instance.data.format == "month") {
 
-                const [date, time] = formatDate(new Date(properties.date)).split(' ');
+        input.value = ds.slice(0, 7);
+        instance.publishState("date", new Date(d.getFullYear(), d.getMonth(), 1));
 
-	            input.value = time;
+    } else if (instance.data.format == "datetime-local") {
 
-                var a = time
-                var b = toDate(a)
-                function toDate(dStr) {
-                    var now = new Date();
-                        now.setHours(dStr.substr(0,dStr.indexOf(":")));
-                        now.setMinutes(dStr.substr(dStr.indexOf(":")+1));
-                        now.setSeconds(0);
-                        return now;
-                }
+        input.value = ds + 'T' + ts;
+        var dt = new Date(d.getTime()); dt.setSeconds(0, 0);
+        instance.publishState("date", dt);
 
-            instance.publishState("date", b);
-            instance.publishState("date_string", b.toString());
+    } else if (instance.data.format == "time") {
 
-            }
-    
-                    if (properties.triggerevent) {
-    	        instance.triggerEvent('dateready');
-                    }
+        input.value = ts;
+        var t = new Date(); t.setHours(d.getHours(), d.getMinutes(), 0, 0);
+        instance.publishState("date", t);
 
+    }
+
+    instance.publishState("date_string", input.value.toString());
+
+    if (properties.triggerevent) {
+        instance.triggerEvent('dateready');
+    }
 
 }
