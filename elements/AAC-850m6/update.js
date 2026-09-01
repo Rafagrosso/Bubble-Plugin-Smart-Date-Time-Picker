@@ -33,86 +33,47 @@ function(instance, properties, context) {
     instance.data.iconurl = properties.iconurl || instance.data.iconurl || "";
 
     if (properties.colorscheme === "customized") {
-        instance.data.bordercolor = properties.bordercolor || "#cccccc";
+        instance.data.bordercolor = properties.bordercolor || "#e2e4e9";
         instance.data.backgroundcolor = properties.backgroundcolor || "#ffffff";
         instance.data.selectedcolor = properties.selectedcolor || "#007BFF";
-        instance.data.hovercolor = properties.hovercolor || "#e6f0ff";
-        instance.data.borderradius = (properties.borderradius != null) ? properties.borderradius : 6;
+        instance.data.hovercolor = properties.hovercolor || "#f0f2f5";
+        instance.data.borderradius = (properties.borderradius != null) ? properties.borderradius : 12;
         instance.data.borderwidth = (properties.borderwidth != null) ? properties.borderwidth : 1;
-        instance.data.fontcolor = properties.fontcolor || "#000000";
+        instance.data.fontcolor = properties.fontcolor || "#1a1c22";
         instance.data.fontsize = (properties.fontsize != null) ? properties.fontsize : 14;
         instance.data.selectionpadding = (properties.selectionpadding != null) ? properties.selectionpadding
                                          : (properties.popuppadding != null) ? properties.popuppadding
                                          : (instance.data.selectionpadding != null ? instance.data.selectionpadding : 10);
     } else {
-        instance.data.bordercolor = instance.data.bordercolor || null;
-        instance.data.backgroundcolor = instance.data.backgroundcolor || null;
-        instance.data.selectedcolor = instance.data.selectedcolor || null;
-        instance.data.hovercolor = instance.data.hovercolor || null;
-        instance.data.borderradius = instance.data.borderradius || null;
-        instance.data.borderwidth = instance.data.borderwidth || null;
-        instance.data.fontcolor = instance.data.fontcolor || null;
-        instance.data.fontsize = instance.data.fontsize || null;
-        instance.data.selectionpadding = instance.data.selectionpadding || null;
+        // temas prontos: zera custom para usar os defaults do tema
+        instance.data.bordercolor = null;
+        instance.data.backgroundcolor = null;
+        instance.data.selectedcolor = null;
+        instance.data.hovercolor = null;
+        instance.data.borderradius = null;
+        instance.data.borderwidth = null;
+        instance.data.fontcolor = null;
+        instance.data.fontsize = null;
+        instance.data.selectionpadding = null;
     }
 
     try {
-        var popup = document.getElementById(instance.data.popupid);
-        var styleEl = document.getElementById(instance.data.styleid);
-
-        var scheme = instance.data.colorscheme || 'light';
-        var bg, border, hover, selected, fontc, fsize;
-        if (scheme === 'customized') {
-            bg = instance.data.backgroundcolor || '#ffffff';
-            border = instance.data.bordercolor || '#cccccc';
-            hover = instance.data.hovercolor || '#f0f0f0';
-            selected = instance.data.selectedcolor || '#007BFF';
-            fontc = instance.data.fontcolor || '#000000';
-            fsize = (instance.data.fontsize != null) ? instance.data.fontsize + 'px' : '14px';
-        } else if (scheme === 'dark') {
-            bg = '#2c2c2c'; border = '#444'; hover = '#3a3a3a'; selected = '#1a73e8'; fontc = '#f2f2f2'; fsize = (instance.data.fontsize != null) ? instance.data.fontsize + 'px' : '14px';
-        } else if (scheme === 'normal') {
-            bg = '#f9f9f9'; border = '#ccc'; hover = '#eaeaea'; selected = '#007BFF'; fontc = '#000'; fsize = (instance.data.fontsize != null) ? instance.data.fontsize + 'px' : '14px';
-        } else {
-            bg = '#ffffff'; border = '#cccccc'; hover = '#f0f0f0'; selected = '#007BFF'; fontc = '#000000'; fsize = (instance.data.fontsize != null) ? instance.data.fontsize + 'px' : '14px';
-        }
-
-        var radius = (instance.data.borderradius != null) ? instance.data.borderradius : 6;
-        var borderw = (instance.data.borderwidth != null) ? instance.data.borderwidth : 1;
-        var selPad = (instance.data.selectionpadding != null) ? instance.data.selectionpadding : 10;
-
-        var css = `
-            #${instance.data.popupid} {
-                width: max-content;
-                max-width: calc(100vw - 20px);
-                background: ${bg};
-                border: ${borderw}px solid ${border};
-                border-radius: ${radius}px;
-                padding: 10px;
-                box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-                color: ${fontc};
-                font-size: ${fsize};
-                font-family: inherit;
-                max-height: 300px;
-                min-height: 250px;
-                overflow-y: auto;
-                overflow-x: hidden;
+        var inputEl = document.getElementById(instance.data.inputid);
+        if (inputEl) {
+            inputEl.style.fontFamily = 'inherit';
+            // sincroniza o tipo do input caso o formato mude
+            if (inputEl.type !== instance.data.format) {
+                try { inputEl.type = instance.data.format; } catch(e){}
             }
-        `;
-
-        if (!styleEl) {
-            styleEl = document.createElement('style');
-            styleEl.id = instance.data.styleid;
-            document.head.appendChild(styleEl);
         }
-        styleEl.innerHTML = css;
 
+        var popup = document.getElementById(instance.data.popupid);
         if (popup) popup.style.fontFamily = 'inherit';
 
-        var inputEl2 = document.getElementById(instance.data.inputid);
-        if (inputEl2) inputEl2.style.fontFamily = 'inherit';
-
+        // o estilo do popup é centralizado no initialize (applyPopupStyle)
         if (typeof instance.data.applyPopupStyle === 'function') instance.data.applyPopupStyle();
+        // se o popup estiver aberto, re-renderiza para refletir novas propriedades
+        if (typeof instance.data.refreshPopup === 'function') instance.data.refreshPopup();
 
     } catch (err) {
         console.warn('update apply popup style error', err);
