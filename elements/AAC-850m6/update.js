@@ -57,10 +57,16 @@ function(instance, properties, context) {
         instance.data.selectionpadding = null;
     }
 
+    // Fonte padronizada (premium) — igual à usada no initialize.js.
+    // Setada aqui via inline !important para nunca perder pra um CSS do
+    // host com prioridade maior; a fonte "oficial" continua vindo do
+    // applyPopupStyle() logo abaixo, isto é só reforço redundante.
+    var FONT_STACK = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
+
     try {
         var inputEl = document.getElementById(instance.data.inputid);
         if (inputEl) {
-            inputEl.style.fontFamily = 'inherit';
+            inputEl.style.setProperty('font-family', FONT_STACK, 'important');
             // sincroniza o tipo do input caso o formato mude
             if (inputEl.type !== instance.data.format) {
                 try { inputEl.type = instance.data.format; } catch(e){}
@@ -68,7 +74,7 @@ function(instance, properties, context) {
         }
 
         var popup = document.getElementById(instance.data.popupid);
-        if (popup) popup.style.fontFamily = 'inherit';
+        if (popup) popup.style.setProperty('font-family', FONT_STACK, 'important');
 
         // o estilo do popup é centralizado no initialize (applyPopupStyle)
         if (typeof instance.data.applyPopupStyle === 'function') instance.data.applyPopupStyle();

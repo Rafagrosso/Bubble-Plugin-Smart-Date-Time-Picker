@@ -13,8 +13,24 @@ function(instance, context) {
 
     $(document).ready(function () {
 
+        // ---------- FONTE (premium, padronizada em todas as instâncias) ----------
+        // Não herda a fonte do host (cada app Bubble tem uma diferente — por
+        // isso ficava inconsistente). Carrega Inter (Google Fonts) uma única
+        // vez por página; enquanto não carrega, cai num stack de sistema já
+        // com boa cara (San Francisco/Segoe UI/Roboto).
+        var FONT_STACK = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
+        try {
+            if (!document.getElementById('smart-dtp-font-inter')) {
+                var fontLink = document.createElement('link');
+                fontLink.id = 'smart-dtp-font-inter';
+                fontLink.rel = 'stylesheet';
+                fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+                document.head.appendChild(fontLink);
+            }
+        } catch(e){}
+
         // ---------- INPUT ----------
-        var myDiv = '<input id="' + instance.data.inputid + '" type="' + instance.data.format + '" style="background-color: transparent; border: none; box-sizing: border-box; width:100%; cursor:pointer; outline:none;">';
+        var myDiv = '<input id="' + instance.data.inputid + '" type="' + instance.data.format + '" style="background-color: transparent; border: none; box-sizing: border-box; width:100%; cursor:pointer; outline:none; font-family: ' + FONT_STACK + '; font-size:14px;">';
         instance.canvas.append(myDiv);
 
         // garante posição relativa para o ícone absoluto
@@ -63,7 +79,11 @@ function(instance, context) {
             input.style.height = (instance.data.input_height != null) ? (instance.data.input_height + 'px') : '100%';
             input.style.boxSizing = 'border-box';
             input.style.textAlign = 'center';
-            input.style.padding = (instance.data.input_padding != null) ? (instance.data.input_padding + 'px') : '0';
+            var basePad = (instance.data.input_padding != null) ? instance.data.input_padding : 0;
+            input.style.padding = basePad + 'px';
+            // reserva espaço à direita para o ícone, senão o texto "centralizado"
+            // fica puxado pra esquerda (o ícone come espaço visual sem o input saber)
+            input.style.paddingRight = (basePad + instance.data.iconsize + 16) + 'px';
             requestAnimationFrame(function(){
                 try {
                     var h = window.getComputedStyle(input).height;
@@ -607,6 +627,39 @@ function(instance, context) {
                 #${instance.data.inputid}::-webkit-calendar-picker-indicator { display:none; -webkit-appearance:none; opacity:0; }
                 #${instance.data.iconid}:hover { opacity:1 !important; }
 
+                /* Fonte padronizada + centralização real do valor no input nativo.
+                   text-align:center sozinho não centra os segmentos internos
+                   (hh:mm) do input nativo — é preciso estilizar o "shadow DOM"
+                   dele via esses pseudo-elementos do WebKit/Blink. */
+                #${instance.data.inputid} {
+                    font-family: ${FONT_STACK} !important;
+                    font-size: ${fsize} !important;
+                    color: ${fontc};
+                    text-align: center;
+                }
+                #${instance.data.inputid}::-webkit-datetime-edit {
+                    display: flex;
+                    width: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 0;
+                }
+                #${instance.data.inputid}::-webkit-datetime-edit-fields-wrapper {
+                    display: flex;
+                    justify-content: center;
+                }
+                #${instance.data.inputid}::-webkit-datetime-edit-text,
+                #${instance.data.inputid}::-webkit-datetime-edit-hour-field,
+                #${instance.data.inputid}::-webkit-datetime-edit-minute-field,
+                #${instance.data.inputid}::-webkit-datetime-edit-second-field,
+                #${instance.data.inputid}::-webkit-datetime-edit-ampm-field,
+                #${instance.data.inputid}::-webkit-datetime-edit-day-field,
+                #${instance.data.inputid}::-webkit-datetime-edit-month-field,
+                #${instance.data.inputid}::-webkit-datetime-edit-year-field {
+                    padding: 0;
+                    font-family: inherit;
+                }
+
                 @keyframes ${anim} {
                     from { opacity:0; transform: translateY(-6px) scale(.98); }
                     to   { opacity:1; transform: none; }
@@ -628,7 +681,7 @@ function(instance, context) {
                     box-shadow: 0 12px 32px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.08);
                     color: ${fontc};
                     font-size: ${fsize};
-                    font-family: inherit;
+                    font-family: ${FONT_STACK};
                     user-select: none;
                     -webkit-user-select: none;
                     overflow: auto;
