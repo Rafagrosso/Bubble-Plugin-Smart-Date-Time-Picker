@@ -94,6 +94,12 @@ function(instance, context) {
         }
 
         // ---------- POPUP ----------
+        // Portal para <html>, NÃO para <body>: apps costumam aplicar
+        // filter/backdrop-filter no <body> (ou num wrapper interno) quando um
+        // popup deles abre, para borrar o fundo. Um filter em um ancestral borra
+        // TODOS os descendentes, não importa z-index — só quem está FORA dessa
+        // árvore escapa. <html> é irmão de <body>, nunca descendente dele.
+        var portalRoot = document.documentElement;
         function ensurePopup() {
             var existing = document.getElementById(instance.data.popupid);
             if (existing) return existing;
@@ -105,10 +111,15 @@ function(instance, context) {
             p.style.display = 'none';
             // isolation:isolate cria stacking context próprio — nada de fora "vaza" pra cima dele
             p.style.isolation = 'isolate';
+            // blindagem: nunca deixa um seletor genérico (ex.: "body.popup-open *")
+            // aplicar blur no próprio popup, mesmo que ele acabe dentro do body
+            p.style.setProperty('filter', 'none', 'important');
+            p.style.setProperty('backdrop-filter', 'none', 'important');
+            p.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
             p.setAttribute('data-open','false');
             // cliques internos não se propagam ao documento (evita fechamento indevido)
             p.addEventListener('click', function(e){ e.stopPropagation(); });
-            document.body.appendChild(p);
+            portalRoot.appendChild(p);
             return p;
         }
 
@@ -119,16 +130,18 @@ function(instance, context) {
         // Bubble pode injetar seus próprios popups/greyout (blur) DEPOIS que nosso
         // popup já existe no DOM. Em caso de z-index empatado, quem vem depois no
         // DOM vence — por isso mantemos nosso popup sempre como o último filho do
-        // <body> enquanto ele estiver aberto, e vigiamos novas inserções.
+        // portal (fora do <body>) enquanto ele estiver aberto, e vigiamos novas
+        // inserções tanto no portal quanto no <body> (caso algo tente nos mover).
         var bodyGuard = null;
         function bringToFront() {
-            if (document.body.lastElementChild !== popup) {
-                document.body.appendChild(popup); // move (não clona) o node existente
+            if (popup.parentNode !== portalRoot || portalRoot.lastElementChild !== popup) {
+                portalRoot.appendChild(popup); // move (não clona) o node existente
             }
         }
         function startBodyGuard() {
             if (bodyGuard || typeof MutationObserver === 'undefined') return;
             bodyGuard = new MutationObserver(function(){ bringToFront(); });
+            bodyGuard.observe(portalRoot, { childList: true });
             bodyGuard.observe(document.body, { childList: true });
         }
         function stopBodyGuard() {
@@ -600,7 +613,11 @@ function(instance, context) {
                 }
 
                 #${instance.data.popupid} {
-                    position: fixed;
+                    position: fixed !important;
+                    z-index: 2147483647 !important;
+                    filter: none !important;
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
                     width: max-content;
                     max-width: calc(100vw - 16px);
                     max-height: calc(100vh - 16px);
