@@ -13,11 +13,11 @@ function(instance, context) {
 
     $(document).ready(function () {
 
-        // ---------- FONTE (premium, padronizada em todas as instâncias) ----------
-        // Não herda a fonte do host (cada app Bubble tem uma diferente — por
-        // isso ficava inconsistente). Carrega Inter (Google Fonts) uma única
-        // vez por página; enquanto não carrega, cai num stack de sistema já
-        // com boa cara (San Francisco/Segoe UI/Roboto).
+        // ---------- FONTE DO POPUP (premium, padronizada) ----------
+        // Vale SÓ para o popup (calendário/seletor de hora), que é UI nossa.
+        // O input em si segue o que o usuário configurar no editor do Bubble.
+        // Carrega Inter (Google Fonts) uma única vez por página; enquanto não
+        // carrega, cai num stack de sistema já com boa cara.
         var FONT_STACK = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
         try {
             if (!document.getElementById('smart-dtp-font-inter')) {
@@ -30,7 +30,9 @@ function(instance, context) {
         } catch(e){}
 
         // ---------- INPUT ----------
-        var myDiv = '<input id="' + instance.data.inputid + '" type="' + instance.data.format + '" style="background-color: transparent; border: none; box-sizing: border-box; width:100%; cursor:pointer; outline:none; font-family: ' + FONT_STACK + '; font-size:14px;">';
+        // font/color = inherit: o texto do input segue o que estiver configurado
+        // no editor do Bubble (Appearance Settings), não uma fonte fixa nossa.
+        var myDiv = '<input id="' + instance.data.inputid + '" type="' + instance.data.format + '" style="background-color: transparent; border: none; box-sizing: border-box; width:100%; cursor:pointer; outline:none; font: inherit; color: inherit;">';
         instance.canvas.append(myDiv);
 
         // garante posição relativa para o ícone absoluto
@@ -627,14 +629,16 @@ function(instance, context) {
                 #${instance.data.inputid}::-webkit-calendar-picker-indicator { display:none; -webkit-appearance:none; opacity:0; }
                 #${instance.data.iconid}:hover { opacity:1 !important; }
 
-                /* Fonte padronizada + centralização real do valor no input nativo.
+                /* O INPUT respeita o que está configurado no editor do Bubble
+                   (Appearance Settings: App Font, tamanho, cor). Inputs nativos
+                   não herdam fonte/cor por padrão — daí o "font: inherit".
+                   A fonte premium fica só no popup, que é UI nossa.
                    text-align:center sozinho não centra os segmentos internos
                    (hh:mm) do input nativo — é preciso estilizar o "shadow DOM"
                    dele via esses pseudo-elementos do WebKit/Blink. */
                 #${instance.data.inputid} {
-                    font-family: ${FONT_STACK} !important;
-                    font-size: ${fsize} !important;
-                    color: ${fontc};
+                    font: inherit;
+                    color: inherit;
                     text-align: center;
                 }
                 #${instance.data.inputid}::-webkit-datetime-edit {
@@ -742,7 +746,10 @@ function(instance, context) {
                 #${instance.data.popupid} .dp-timecols { display:flex; gap:6px; }
                 #${instance.data.popupid} .dp-hours, #${instance.data.popupid} .dp-mins {
                     position:relative; height:264px; min-width:52px; overflow-y:auto;
-                    -ms-overflow-style:none; scrollbar-width:none; scroll-behavior:smooth;
+                    /* scroll-behavior:smooth NÃO: a rolagem até o valor selecionado
+                       vira animação, e qualquer movimento do mouse sobre a lista
+                       cancela a animação no meio — a lista ficava parada no 00. */
+                    -ms-overflow-style:none; scrollbar-width:none; scroll-behavior:auto;
                 }
                 #${instance.data.popupid} .dp-hours::-webkit-scrollbar,
                 #${instance.data.popupid} .dp-mins::-webkit-scrollbar { display:none; width:0; height:0; }
