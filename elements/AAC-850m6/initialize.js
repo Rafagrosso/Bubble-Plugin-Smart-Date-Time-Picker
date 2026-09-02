@@ -103,6 +103,8 @@ function(instance, context) {
             p.style.position = 'fixed';
             p.style.zIndex = '2147483647';
             p.style.display = 'none';
+            // isolation:isolate cria stacking context próprio — nada de fora "vaza" pra cima dele
+            p.style.isolation = 'isolate';
             p.setAttribute('data-open','false');
             // cliques internos não se propagam ao documento (evita fechamento indevido)
             p.addEventListener('click', function(e){ e.stopPropagation(); });
@@ -113,9 +115,30 @@ function(instance, context) {
         var popup = ensurePopup();
         window.__smartDTP[instance.data.popupid] = function(){ closePopup(); };
 
+        // ---------- GUARDA DE EMPILHAMENTO ----------
+        // Bubble pode injetar seus próprios popups/greyout (blur) DEPOIS que nosso
+        // popup já existe no DOM. Em caso de z-index empatado, quem vem depois no
+        // DOM vence — por isso mantemos nosso popup sempre como o último filho do
+        // <body> enquanto ele estiver aberto, e vigiamos novas inserções.
+        var bodyGuard = null;
+        function bringToFront() {
+            if (document.body.lastElementChild !== popup) {
+                document.body.appendChild(popup); // move (não clona) o node existente
+            }
+        }
+        function startBodyGuard() {
+            if (bodyGuard || typeof MutationObserver === 'undefined') return;
+            bodyGuard = new MutationObserver(function(){ bringToFront(); });
+            bodyGuard.observe(document.body, { childList: true });
+        }
+        function stopBodyGuard() {
+            if (bodyGuard) { bodyGuard.disconnect(); bodyGuard = null; }
+        }
+
         function closePopup() {
             popup.style.display = 'none';
             popup.setAttribute('data-open','false');
+            stopBodyGuard();
             document.removeEventListener('click', onDocClick);
             document.removeEventListener('keydown', onKeyDown);
             window.removeEventListener('resize', positionPopup);
@@ -520,10 +543,12 @@ function(instance, context) {
             applyPopupStyle();
             render();
 
+            bringToFront(); // garante que nenhum overlay/blur criado antes fique acima
             popup.style.display = 'block';
             popup.setAttribute('data-open','true');
             positionPopup();
             scrollTimeIntoView();
+            startBodyGuard(); // protege contra overlays criados DEPOIS de abrir
 
             setTimeout(function(){
                 document.addEventListener('click', onDocClick);
